@@ -2,17 +2,14 @@ package org.example.server.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.example.server.demo.DemoService;
-import org.example.server.model.RpcMiddleware;
+import org.example.server.middleware.RpcMiddleware;
 import org.example.server.model.RpcRequest;
 import org.example.server.model.RpcResponse;
-import org.example.server.model.RpcService;
+import org.example.server.service.RpcService;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +17,8 @@ public class RpcHandler extends ChannelInboundHandlerAdapter {
     private final Map<String, RpcService> registeredServices;
 
     private final List<RpcMiddleware> rpcMiddlewares;
+
+    private final ObjectMapper mapper;
 
     public RpcHandler(List<RpcMiddleware> rpcMiddlewares) {
         this.rpcMiddlewares = rpcMiddlewares;
@@ -29,6 +28,8 @@ public class RpcHandler extends ChannelInboundHandlerAdapter {
             System.out.println("Hello World!!!");
             resp.setCode(0);
         }, "Demo", new DemoService()::demo); // Should be "DemoService.demo"
+
+        this.mapper = new ObjectMapper();
     }
 
     private RpcResponse<?> handleWithMiddleWares(RpcRequest<?> req) {
@@ -47,11 +48,8 @@ public class RpcHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws JsonProcessingException {
-        ByteBuf buf = (ByteBuf) msg;
-        String s = buf.toString(StandardCharsets.UTF_8);
-        RpcRequest<?> rpcRequest = new ObjectMapper().readValue(s, RpcRequest.class);
-        RpcResponse<?> resp = handleWithMiddleWares(rpcRequest);
-        ctx.writeAndFlush(Unpooled.copiedBuffer(new ObjectMapper().writeValueAsString(resp), StandardCharsets.UTF_8));
+        RpcResponse<?> resp = handleWithMiddleWares(mapper.readValue((String) msg, RpcRequest.class));
+        ctx.writeAndFlush(mapper.writeValueAsString(resp));
     }
 
     @Override

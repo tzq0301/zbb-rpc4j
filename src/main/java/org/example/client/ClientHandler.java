@@ -13,8 +13,7 @@ import java.nio.charset.StandardCharsets;
 public class ClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf buf = (ByteBuf) msg;
-        String s = buf.toString(StandardCharsets.UTF_8);
+        String s = (String) msg;
         RpcResponse<?> resp = new ObjectMapper().readValue(s, RpcResponse.class);
         System.out.println(resp);
         ctx.close();

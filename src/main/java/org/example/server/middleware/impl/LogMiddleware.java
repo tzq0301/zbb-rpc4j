@@ -1,4 +1,7 @@
-package org.example.server.model;
+package org.example.server.middleware.impl;
+
+import org.example.server.middleware.RpcMiddleware;
+import org.example.server.service.RpcService;
 
 public class LogMiddleware implements RpcMiddleware {
     @Override
