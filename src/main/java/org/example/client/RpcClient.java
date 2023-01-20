@@ -1,7 +1,6 @@
 package org.example.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -12,40 +11,49 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import org.example.client.handler.ClientHandler;
 import org.example.server.model.RpcRequest;
 import org.example.server.model.RpcResponse;
 
 public class RpcClient {
-    // TODO AOP 捕获异常
-    // TODO 返回响应
-    public static RpcResponse<?> call(String host, int port, RpcRequest<?> req) throws InterruptedException, JsonProcessingException {
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+    private final String host;
 
-        try {
-            Bootstrap b = new Bootstrap();
-            b.group(workerGroup); // (2)
-            b.channel(NioSocketChannel.class); // (3)
-            b.option(ChannelOption.SO_KEEPALIVE, true); // (4)
-            b.handler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                public void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline()
-                            .addLast(new StringDecoder(), new StringEncoder())
-                            .addLast(new ClientHandler());
-                }
-            });
+    private final int port;
 
-            // Start the client.
-            ChannelFuture f = b.connect(host, port).sync(); // (5)
+    private final ClientHandler clientHandler;
 
-            f.channel().writeAndFlush(new ObjectMapper().writeValueAsString(req));
+    private final EventLoopGroup workerGroup;
 
-            // Wait until the connection is closed.
-            f.channel().closeFuture().sync();
-        } finally {
-            workerGroup.shutdownGracefully();
-        }
+    private final Bootstrap bootstrap;
 
-        return null;
+    public RpcClient(String host, int port) {
+        this.host = host;
+        this.port = port;
+        this.clientHandler = new ClientHandler();
+        this.workerGroup = new NioEventLoopGroup();
+        this.bootstrap = new Bootstrap()
+                .group(workerGroup)
+                .channel(NioSocketChannel.class)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .handler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    public void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(new StringDecoder(), new StringEncoder()).addLast(clientHandler);
+                    }
+                });
+    }
+
+    public synchronized RpcResponse<?> call(RpcRequest<?> req) throws InterruptedException, JsonProcessingException {
+        ChannelFuture f = bootstrap.connect(host, port).sync();
+
+        RpcResponse<?> resp = clientHandler.call(req);
+
+        f.channel().closeFuture().sync();
+
+        return resp;
+    }
+
+    public void shutdown() {
+        workerGroup.shutdownGracefully();
     }
 }

@@ -1,9 +1,8 @@
 package org.example.server.handler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import lombok.extern.java.Log;
 import org.example.server.demo.DemoService;
 import org.example.server.middleware.RpcMiddleware;
 import org.example.server.model.RpcRequest;
@@ -13,6 +12,7 @@ import org.example.server.service.RpcService;
 import java.util.List;
 import java.util.Map;
 
+@Log
 public class RpcHandler extends ChannelInboundHandlerAdapter {
     private final Map<String, RpcService> registeredServices;
 
@@ -23,7 +23,7 @@ public class RpcHandler extends ChannelInboundHandlerAdapter {
 
         // FIXME 反射 -> 扫描
         this.registeredServices = Map.of("Hello", (req, resp) -> {
-            System.out.println("Hello World!!!");
+            log.info("Hello World!!!");
             resp.setCode(0);
         }, "Demo", new DemoService()::demo); // Should be "DemoService.demo"
     }
