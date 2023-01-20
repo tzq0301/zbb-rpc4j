@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.example</groupId>
+    <artifactId>zbb-rpc-demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>Archetype - zbb-rpc-demo</name>
+
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.87.Final</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>                              
+            <groupId>org.projectlombok</groupId>  
+            <artifactId>lombok</artifactId>       
+            <version>1.18.24</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.13.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.13.4.1</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>                                              
+                <groupId>org.apache.maven.plugins</groupId>       
+                <artifactId>maven-compiler-plugin</artifactId>    
+                <version>3.7.0</version>                          
+                <configuration>                                   
+                    <source>${maven.compiler.source}</source>     
+                    <target>${maven.compiler.target}</target>     
+                    <annotationProcessorPaths>                    
+                        <path>                                    
+                            <groupId>org.projectlombok</groupId>  
+                            <artifactId>lombok</artifactId>       
+                            <version>1.18.24</version>            
+                        </path>                                   
+                    </annotationProcessorPaths>                   
+                </configuration>                                  
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
