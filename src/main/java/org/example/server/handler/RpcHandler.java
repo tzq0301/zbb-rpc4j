@@ -18,8 +18,6 @@ public class RpcHandler extends ChannelInboundHandlerAdapter {
 
     private final List<RpcMiddleware> rpcMiddlewares;
 
-    private final ObjectMapper mapper;
-
     public RpcHandler(List<RpcMiddleware> rpcMiddlewares) {
         this.rpcMiddlewares = rpcMiddlewares;
 
@@ -28,8 +26,6 @@ public class RpcHandler extends ChannelInboundHandlerAdapter {
             System.out.println("Hello World!!!");
             resp.setCode(0);
         }, "Demo", new DemoService()::demo); // Should be "DemoService.demo"
-
-        this.mapper = new ObjectMapper();
     }
 
     private RpcResponse<?> handleWithMiddleWares(RpcRequest<?> req) {
@@ -47,9 +43,10 @@ public class RpcHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws JsonProcessingException {
-        RpcResponse<?> resp = handleWithMiddleWares(mapper.readValue((String) msg, RpcRequest.class));
-        ctx.writeAndFlush(mapper.writeValueAsString(resp));
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        RpcRequest<?> req = (RpcRequest<?>) msg;
+        RpcResponse<?> reps = handleWithMiddleWares(req);
+        ctx.writeAndFlush(reps);
     }
 
     @Override

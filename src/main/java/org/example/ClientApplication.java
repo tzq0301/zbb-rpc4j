@@ -14,6 +14,7 @@ import io.netty.handler.codec.string.StringEncoder;
 import org.example.client.ClientHandler;
 import org.example.server.model.RpcRequest;
 
+// TODO 使用 RpcClient
 public class ClientApplication {
     public static void main(String[] args) throws Exception {
         String host = "localhost";

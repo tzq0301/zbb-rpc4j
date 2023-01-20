@@ -9,6 +9,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import org.example.server.handler.RpcCodec;
 import org.example.server.handler.RpcHandler;
 import org.example.server.middleware.RpcMiddleware;
 
@@ -16,12 +17,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
-public class Server {
+public class RpcServer {
     private final List<RpcMiddleware> rpcMiddlewares;
 
     private final int port;
 
-    public Server(int port, RpcMiddleware ...rpcMiddlewares) {
+    public RpcServer(int port, RpcMiddleware ...rpcMiddlewares) {
         this.port = port;
         this.rpcMiddlewares = Arrays.asList(rpcMiddlewares);
     }
@@ -39,7 +40,7 @@ public class Server {
                         public void initChannel(SocketChannel ch) {
                             ch.pipeline()
                                     .addLast(new StringDecoder(StandardCharsets.UTF_8), new StringEncoder(StandardCharsets.UTF_8))
-                                    // TODO MessageCodec
+                                    .addLast(new RpcCodec())
                                     .addLast(new RpcHandler(rpcMiddlewares));
                         }
                     });
