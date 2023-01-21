@@ -12,17 +12,39 @@ import io.netty.handler.codec.string.StringEncoder;
 import org.example.server.handler.RpcCodec;
 import org.example.server.handler.RpcHandler;
 import org.example.server.model.middleware.RpcMiddleware;
+import org.example.server.model.service.ServiceRegistry;
+import org.example.server.service.RpcService;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class RpcServer {
-    private final RpcMiddleware[] rpcMiddlewares;
-
     private final int port;
 
-    public RpcServer(int port, RpcMiddleware ...rpcMiddlewares) {
+    private final List<RpcMiddleware> rpcMiddlewares;
+
+    public RpcServer(int port) {
         this.port = port;
-        this.rpcMiddlewares = rpcMiddlewares;
+        this.rpcMiddlewares = new ArrayList<>();
+    }
+
+    public void addMiddleware(final RpcMiddleware middleware) {
+        this.rpcMiddlewares.add(middleware);
+    }
+
+    public void addMiddlewares(final RpcMiddleware... middleware) {
+        Arrays.stream(middleware).forEach(this::addMiddleware);
+    }
+
+    public void registerService(final String serviceName, final RpcService service) {
+        ServiceRegistry.register(serviceName, service);
+    }
+
+    public void registerServices(final Map<String, RpcService> services) {
+        services.forEach(this::registerService);
     }
 
     public void run() throws Exception {
@@ -39,7 +61,7 @@ public class RpcServer {
                             ch.pipeline()
                                     .addLast(new StringDecoder(StandardCharsets.UTF_8), new StringEncoder(StandardCharsets.UTF_8))
                                     .addLast(new RpcCodec())
-                                    .addLast(new RpcHandler(rpcMiddlewares));
+                                    .addLast(new RpcHandler(rpcMiddlewares.toArray(new RpcMiddleware[0])));
                         }
                     });
 

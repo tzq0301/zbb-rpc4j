@@ -5,7 +5,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.java.Log;
 import org.example.common.model.request.RpcRequest;
 import org.example.common.model.response.RpcResponse;
-import org.example.server.demo.DemoService;
 import org.example.server.model.middleware.RpcMiddleware;
 import org.example.server.model.service.ServiceRegistry;
 import org.example.server.service.RpcService;
@@ -19,14 +18,6 @@ public class RpcHandler extends ChannelInboundHandlerAdapter {
 
     public RpcHandler(RpcMiddleware ...rpcMiddlewares) {
         this.rpcMiddlewares = Arrays.asList(rpcMiddlewares);
-
-        // TODO 反射扫描
-        ServiceRegistry.register("Hello", (req, resp) -> {
-            log.info("Hello World!!!");
-            resp.setCode(0);
-        });
-
-        ServiceRegistry.register("Demo", new DemoService()::demo);
     }
 
     private RpcResponse<?> handleWithMiddleWares(RpcRequest<?> req) {
