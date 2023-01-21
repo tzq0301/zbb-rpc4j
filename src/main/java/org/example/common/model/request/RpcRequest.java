@@ -1,4 +1,4 @@
-package org.example.common.model;
+package org.example.common.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RpcRequest<T> {
-    private String methodName;
+    private String serviceName;
     private T data;
 }

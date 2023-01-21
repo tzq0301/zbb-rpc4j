@@ -1,8 +1,8 @@
 package org.example;
 
 import org.example.client.RpcClient;
-import org.example.common.model.RpcRequest;
-import org.example.common.model.RpcResponse;
+import org.example.common.model.request.RpcRequest;
+import org.example.common.model.response.RpcResponse;
 
 public class ClientApplication {
     public static void main(String[] args) throws Exception {

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.example.common.model.RpcRequest;
-import org.example.common.model.RpcResponse;
+import org.example.common.model.request.RpcRequest;
+import org.example.common.model.response.RpcResponse;
 
 public class ClientHandler extends ChannelInboundHandlerAdapter {
     private ChannelHandlerContext ctx;

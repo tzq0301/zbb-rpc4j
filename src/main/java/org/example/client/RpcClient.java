@@ -12,8 +12,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import org.example.client.handler.ClientHandler;
-import org.example.common.model.RpcRequest;
-import org.example.common.model.RpcResponse;
+import org.example.common.model.request.RpcRequest;
+import org.example.common.model.response.RpcResponse;
 
 import java.nio.charset.StandardCharsets;
 
