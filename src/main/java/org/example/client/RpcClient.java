@@ -12,8 +12,10 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import org.example.client.handler.ClientHandler;
-import org.example.server.model.RpcRequest;
-import org.example.server.model.RpcResponse;
+import org.example.common.model.RpcRequest;
+import org.example.common.model.RpcResponse;
+
+import java.nio.charset.StandardCharsets;
 
 public class RpcClient {
     private final String host;
@@ -38,7 +40,9 @@ public class RpcClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
-                        ch.pipeline().addLast(new StringDecoder(), new StringEncoder()).addLast(clientHandler);
+                        ch.pipeline()
+                                .addLast(new StringDecoder(StandardCharsets.UTF_8), new StringEncoder(StandardCharsets.UTF_8))
+                                .addLast(clientHandler);
                     }
                 });
     }

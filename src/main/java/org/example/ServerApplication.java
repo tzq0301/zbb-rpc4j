@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.server.RpcServer;
-import org.example.server.middleware.impl.LogMiddleware;
+import org.example.server.model.middleware.impl.JdkLogMiddleware;
 
 /**
  * @author tzq0301
@@ -9,6 +9,6 @@ import org.example.server.middleware.impl.LogMiddleware;
  */
 public class ServerApplication {
     public static void main(String[] args) throws Exception {
-        new RpcServer(8080, new LogMiddleware()).run();
+        new RpcServer(8080, new JdkLogMiddleware()).run();
     }
 }

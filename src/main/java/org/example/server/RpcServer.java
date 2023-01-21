@@ -11,20 +11,18 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import org.example.server.handler.RpcCodec;
 import org.example.server.handler.RpcHandler;
-import org.example.server.middleware.RpcMiddleware;
+import org.example.server.model.middleware.RpcMiddleware;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
 
 public class RpcServer {
-    private final List<RpcMiddleware> rpcMiddlewares;
+    private final RpcMiddleware[] rpcMiddlewares;
 
     private final int port;
 
     public RpcServer(int port, RpcMiddleware ...rpcMiddlewares) {
         this.port = port;
-        this.rpcMiddlewares = Arrays.asList(rpcMiddlewares);
+        this.rpcMiddlewares = rpcMiddlewares;
     }
 
     public void run() throws Exception {

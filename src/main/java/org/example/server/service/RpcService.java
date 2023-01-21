@@ -1,7 +1,7 @@
 package org.example.server.service;
 
-import org.example.server.model.RpcRequest;
-import org.example.server.model.RpcResponse;
+import org.example.common.model.RpcRequest;
+import org.example.common.model.RpcResponse;
 
 import java.util.function.BiConsumer;
 

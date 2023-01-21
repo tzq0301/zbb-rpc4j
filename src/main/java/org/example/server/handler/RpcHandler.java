@@ -4,11 +4,12 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.java.Log;
 import org.example.server.demo.DemoService;
-import org.example.server.middleware.RpcMiddleware;
-import org.example.server.model.RpcRequest;
-import org.example.server.model.RpcResponse;
+import org.example.server.model.middleware.RpcMiddleware;
+import org.example.common.model.RpcRequest;
+import org.example.common.model.RpcResponse;
 import org.example.server.service.RpcService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -18,14 +19,14 @@ public class RpcHandler extends ChannelInboundHandlerAdapter {
 
     private final List<RpcMiddleware> rpcMiddlewares;
 
-    public RpcHandler(List<RpcMiddleware> rpcMiddlewares) {
-        this.rpcMiddlewares = rpcMiddlewares;
+    public RpcHandler(RpcMiddleware ...rpcMiddlewares) {
+        this.rpcMiddlewares = Arrays.asList(rpcMiddlewares);
 
-        // FIXME 反射 -> 扫描
+        // TODO 反射 -> 扫描
         this.registeredServices = Map.of("Hello", (req, resp) -> {
             log.info("Hello World!!!");
             resp.setCode(0);
-        }, "Demo", new DemoService()::demo); // Should be "DemoService.demo"
+        }, "Demo", new DemoService()::demo); // TODO Should be "DemoService.demo"
     }
 
     private RpcResponse<?> handleWithMiddleWares(RpcRequest<?> req) {

@@ -3,8 +3,8 @@ package org.example.server.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageCodec;
-import org.example.server.model.RpcRequest;
-import org.example.server.model.RpcResponse;
+import org.example.common.model.RpcRequest;
+import org.example.common.model.RpcResponse;
 
 import java.util.List;
 
