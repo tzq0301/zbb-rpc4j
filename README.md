@@ -51,7 +51,7 @@ RPC 分为 Transport、Protocol、Processor 层，其中 Transport 层负责网�
 
 ### Transport 层
 
-使用 Netty 作为 Transport 层的解决方案，在 `org.example.server.RpcServer` 中的 `run` 方法中封装了 Netty 官网的 Example 中的代码
+使用 Netty 作为 Transport 层的解决方案，在 `server.cn.tzq0301.RpcServer` 中的 `run` 方法中封装了 Netty 官网的 Example 中的代码
 
 ### Protocol 层
 

@@ -1,4 +1,4 @@
-package org.example.common.model.request;
+package cn.tzq0301.common.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
-package org.example.server.model.middleware;
+package cn.tzq0301.server.model.middleware;
 
-import org.example.server.service.RpcService;
+import cn.tzq0301.server.service.RpcService;
 
 @FunctionalInterface
 public interface RpcMiddleware {

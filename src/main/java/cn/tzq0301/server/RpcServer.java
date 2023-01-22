@@ -1,5 +1,6 @@
-package org.example.server;
+package cn.tzq0301.server;
 
+import cn.tzq0301.server.handler.RpcHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,11 +10,10 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
-import org.example.server.handler.RpcCodec;
-import org.example.server.handler.RpcHandler;
-import org.example.server.model.middleware.RpcMiddleware;
-import org.example.server.model.service.ServiceRegistry;
-import org.example.server.service.RpcService;
+import cn.tzq0301.server.handler.RpcCodec;
+import cn.tzq0301.server.model.middleware.RpcMiddleware;
+import cn.tzq0301.server.model.service.ServiceRegistry;
+import cn.tzq0301.server.service.RpcService;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
-package org.example.server.demo;
+package cn.tzq0301.server.demo;
 
-import org.example.common.model.request.RpcRequest;
-import org.example.common.model.response.RpcResponse;
+import cn.tzq0301.common.model.request.RpcRequest;
+import cn.tzq0301.common.model.response.RpcResponse;
 
 public class DemoService {
     public void demo(RpcRequest<?> req, RpcResponse<?> resp) {

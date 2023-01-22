@@ -1,5 +1,7 @@
-package org.example.client;
+package cn.tzq0301.client;
 
+import cn.tzq0301.common.model.request.RpcRequest;
+import cn.tzq0301.common.model.response.RpcResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -11,9 +13,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
-import org.example.client.handler.ClientHandler;
-import org.example.common.model.request.RpcRequest;
-import org.example.common.model.response.RpcResponse;
+import cn.tzq0301.client.handler.ClientHandler;
 
 import java.nio.charset.StandardCharsets;
 

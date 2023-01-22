@@ -1,6 +1,6 @@
-package org.example.server.model.service;
+package cn.tzq0301.server.model.service;
 
-import org.example.server.service.RpcService;
+import cn.tzq0301.server.service.RpcService;
 
 import java.util.HashMap;
 import java.util.Map;
