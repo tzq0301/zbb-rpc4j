@@ -1,4 +1,6 @@
-# 手写 Java RPC（基于 Netty 的最简单版 RPC）
+# 手写 Java RPC
+
+最简单版 RPC：基于 Netty 网络库、基于 JSON 协议
 
 ![img.png](imgs/img.png)
 
