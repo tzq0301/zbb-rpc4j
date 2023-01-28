@@ -78,7 +78,7 @@ public interface RpcService extends BiConsumer<RpcRequest<?>, RpcResponse<?>> {
 ```java
 @FunctionalInterface
 public interface RpcMiddleware {
-    RpcService apply(RpcService service);
+    RpcService apply(RpcContext ctx, RpcService service);
 }
 ```
 
@@ -88,7 +88,7 @@ public interface RpcMiddleware {
 @Log
 public class JdkLogMiddleware implements RpcMiddleware {
     @Override
-    public RpcService apply(RpcService service) {
+    public RpcService apply(RpcContext ctx, RpcService service) {
         return (req, resp) -> {
             log.info(String.format("Request:  %s", req.toString()));
             service.accept(req, resp);

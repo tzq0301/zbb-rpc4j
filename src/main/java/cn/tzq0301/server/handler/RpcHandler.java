@@ -1,38 +1,45 @@
 package cn.tzq0301.server.handler;
 
+import cn.tzq0301.server.model.context.RpcContext;
+import cn.tzq0301.server.model.context.RpcContexts;
+import cn.tzq0301.server.registry.ServiceRegistry;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.java.Log;
 import cn.tzq0301.common.model.request.RpcRequest;
 import cn.tzq0301.common.model.response.RpcResponse;
 import cn.tzq0301.server.model.middleware.RpcMiddleware;
-import cn.tzq0301.server.model.service.ServiceRegistry;
-import cn.tzq0301.server.service.RpcService;
+import cn.tzq0301.server.registry.impl.LocalServiceRegistry;
+import cn.tzq0301.server.model.service.RpcService;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Log
 public class RpcHandler extends ChannelInboundHandlerAdapter {
+    private final ServiceRegistry serviceRegistry;
+
     private final List<RpcMiddleware> rpcMiddlewares;
 
-    public RpcHandler(RpcMiddleware ...rpcMiddlewares) {
+    public RpcHandler(ServiceRegistry serviceRegistry, RpcMiddleware ...rpcMiddlewares) {
+        this.serviceRegistry = serviceRegistry;
         this.rpcMiddlewares = Arrays.asList(rpcMiddlewares);
     }
 
-    private RpcResponse<?> handleWithMiddleWares(RpcRequest<?> req) {
+    private RpcResponse<?> handleWithMiddleWares(ChannelHandlerContext ctx, RpcRequest<?> req) {
         RpcService service;
 
         try {
-            service = ServiceRegistry.get(req.getServiceName());
+            service = serviceRegistry.get(req.getServiceName());
         } catch (NullPointerException e) {
             return RpcResponse.invalidParam("Service not found");
         }
 
+        RpcContext rpcContext = RpcContexts.newRpcContext(ctx);
         RpcResponse<?> resp = new RpcResponse<>();
 
         for (RpcMiddleware middleware : rpcMiddlewares) {
-            service = middleware.apply(service);
+            service = middleware.apply(rpcContext, service);
         }
 
         service.accept(req, resp);
@@ -43,7 +50,7 @@ public class RpcHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         RpcRequest<?> req = (RpcRequest<?>) msg;
-        RpcResponse<?> reps = handleWithMiddleWares(req);
+        RpcResponse<?> reps = handleWithMiddleWares(ctx, req);
         ctx.writeAndFlush(reps);
     }
 

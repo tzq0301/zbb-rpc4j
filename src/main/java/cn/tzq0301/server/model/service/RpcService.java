@@ -1,4 +1,4 @@
-package cn.tzq0301.server.service;
+package cn.tzq0301.server.model.service;
 
 import cn.tzq0301.common.model.request.RpcRequest;
 import cn.tzq0301.common.model.response.RpcResponse;

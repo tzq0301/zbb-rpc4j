@@ -1,6 +1,7 @@
 package cn.tzq0301.server;
 
 import cn.tzq0301.server.handler.RpcHandler;
+import cn.tzq0301.server.registry.ServiceRegistry;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -12,8 +13,8 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import cn.tzq0301.server.handler.RpcCodec;
 import cn.tzq0301.server.model.middleware.RpcMiddleware;
-import cn.tzq0301.server.model.service.ServiceRegistry;
-import cn.tzq0301.server.service.RpcService;
+import cn.tzq0301.server.registry.impl.LocalServiceRegistry;
+import cn.tzq0301.server.model.service.RpcService;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -26,9 +27,12 @@ public class RpcServer {
 
     private final List<RpcMiddleware> rpcMiddlewares;
 
+    private ServiceRegistry serviceRegistry;
+
     public RpcServer(int port) {
         this.port = port;
         this.rpcMiddlewares = new ArrayList<>();
+        this.serviceRegistry = new LocalServiceRegistry(); // Default
     }
 
     public void addMiddleware(final RpcMiddleware middleware) {
@@ -39,8 +43,12 @@ public class RpcServer {
         Arrays.stream(middleware).forEach(this::addMiddleware);
     }
 
+    public void setServiceRegistry(final ServiceRegistry serviceRegistry) {
+        this.serviceRegistry = serviceRegistry;
+    }
+
     public void registerService(final String serviceName, final RpcService service) {
-        ServiceRegistry.register(serviceName, service);
+        serviceRegistry.register(serviceName, service);
     }
 
     public void registerServices(final Map<String, RpcService> services) {
@@ -61,7 +69,7 @@ public class RpcServer {
                             ch.pipeline()
                                     .addLast(new StringDecoder(StandardCharsets.UTF_8), new StringEncoder(StandardCharsets.UTF_8))
                                     .addLast(new RpcCodec())
-                                    .addLast(new RpcHandler(rpcMiddlewares.toArray(new RpcMiddleware[0])));
+                                    .addLast(new RpcHandler(serviceRegistry, rpcMiddlewares.toArray(new RpcMiddleware[0])));
                         }
                     });
 
