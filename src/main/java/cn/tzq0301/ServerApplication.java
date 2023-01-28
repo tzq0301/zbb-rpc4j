@@ -1,11 +1,9 @@
 package cn.tzq0301;
 
-import cn.tzq0301.server.registry.ServiceRegistry;
-import cn.tzq0301.server.registry.impl.LocalServiceRegistry;
-import lombok.extern.java.Log;
 import cn.tzq0301.server.RpcServer;
 import cn.tzq0301.server.demo.DemoService;
 import cn.tzq0301.server.model.middleware.impl.JdkLogMiddleware;
+import lombok.extern.java.Log;
 
 import java.util.Map;
 
@@ -17,7 +15,7 @@ public class ServerApplication {
         server.addMiddlewares(new JdkLogMiddleware());
 
         server.registerServices(Map.of( // TODO 反射扫描
-                "Hello", (req, resp) -> {
+                "Hello", (ctx, req, resp) -> {
                     log.info("Hello World!!!");
                     resp.setCode(0);
                 },

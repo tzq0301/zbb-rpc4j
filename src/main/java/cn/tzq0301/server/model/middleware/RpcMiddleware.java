@@ -5,5 +5,5 @@ import cn.tzq0301.server.model.service.RpcService;
 
 @FunctionalInterface
 public interface RpcMiddleware {
-    RpcService apply(RpcContext ctx, RpcService service);
+    RpcService apply(RpcService service);
 }

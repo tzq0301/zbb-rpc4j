@@ -63,7 +63,8 @@ RPC 分为 Transport、Protocol、Processor 层，其中 Transport 层负责网�
 
 ```java
 @FunctionalInterface
-public interface RpcService extends BiConsumer<RpcRequest<?>, RpcResponse<?>> {
+public interface RpcService {
+    void call(RpcContext context, RpcRequest<?> req, RpcResponse<?> resp);
 }
 ```
 
@@ -78,7 +79,7 @@ public interface RpcService extends BiConsumer<RpcRequest<?>, RpcResponse<?>> {
 ```java
 @FunctionalInterface
 public interface RpcMiddleware {
-    RpcService apply(RpcContext ctx, RpcService service);
+    RpcService apply(RpcService service);
 }
 ```
 
@@ -88,10 +89,10 @@ public interface RpcMiddleware {
 @Log
 public class JdkLogMiddleware implements RpcMiddleware {
     @Override
-    public RpcService apply(RpcContext ctx, RpcService service) {
-        return (req, resp) -> {
+    public RpcService apply(RpcService service) {
+        return (ctx, req, resp) -> {
             log.info(String.format("Request:  %s", req.toString()));
-            service.accept(req, resp);
+            service.call(ctx, req, resp);
             log.info(String.format("Response: %s", resp.toString()));
         };
     }

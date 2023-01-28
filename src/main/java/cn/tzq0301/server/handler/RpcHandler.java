@@ -35,14 +35,14 @@ public class RpcHandler extends ChannelInboundHandlerAdapter {
             return RpcResponse.invalidParam("Service not found");
         }
 
-        RpcContext rpcContext = RpcContexts.newRpcContext(ctx);
-        RpcResponse<?> resp = new RpcResponse<>();
-
         for (RpcMiddleware middleware : rpcMiddlewares) {
-            service = middleware.apply(rpcContext, service);
+            service = middleware.apply(service);
         }
 
-        service.accept(req, resp);
+        RpcResponse<?> resp = new RpcResponse<>();
+        RpcContext context = RpcContexts.newRpcContext(ctx);
+
+        service.call(context, req, resp);
 
         return resp;
     }
