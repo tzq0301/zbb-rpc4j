@@ -1,4 +1,4 @@
-package cn.tzq0301.common.model.response;
+package cn.tzq0301.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,7 @@
 package cn.tzq0301.client.handler;
 
-import cn.tzq0301.common.model.request.RpcRequest;
-import cn.tzq0301.common.model.response.RpcResponse;
+import cn.tzq0301.common.request.RpcRequest;
+import cn.tzq0301.common.response.RpcResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelHandlerContext;

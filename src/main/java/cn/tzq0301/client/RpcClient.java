@@ -1,7 +1,7 @@
 package cn.tzq0301.client;
 
-import cn.tzq0301.common.model.request.RpcRequest;
-import cn.tzq0301.common.model.response.RpcResponse;
+import cn.tzq0301.common.request.RpcRequest;
+import cn.tzq0301.common.response.RpcResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;

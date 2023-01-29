@@ -1,4 +1,4 @@
-package cn.tzq0301.server.registry;
+package cn.tzq0301.registry;
 
 import cn.tzq0301.server.model.service.RpcService;
 

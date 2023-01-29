@@ -1,7 +1,7 @@
-package cn.tzq0301.server.registry.impl;
+package cn.tzq0301.registry.impl;
 
+import cn.tzq0301.registry.ServiceRegistry;
 import cn.tzq0301.server.model.service.RpcService;
-import cn.tzq0301.server.registry.ServiceRegistry;
 
 import java.util.HashMap;
 import java.util.Map;

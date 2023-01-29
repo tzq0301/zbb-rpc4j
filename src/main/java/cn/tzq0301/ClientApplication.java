@@ -1,8 +1,8 @@
 package cn.tzq0301;
 
 import cn.tzq0301.client.RpcClient;
-import cn.tzq0301.common.model.request.RpcRequest;
-import cn.tzq0301.common.model.response.RpcResponse;
+import cn.tzq0301.common.request.RpcRequest;
+import cn.tzq0301.common.response.RpcResponse;
 
 public class ClientApplication {
     public static void main(String[] args) throws Exception {

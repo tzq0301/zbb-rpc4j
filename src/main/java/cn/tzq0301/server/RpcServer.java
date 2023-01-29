@@ -1,7 +1,7 @@
 package cn.tzq0301.server;
 
 import cn.tzq0301.server.handler.RpcHandler;
-import cn.tzq0301.server.registry.ServiceRegistry;
+import cn.tzq0301.registry.ServiceRegistry;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -13,7 +13,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import cn.tzq0301.server.handler.RpcCodec;
 import cn.tzq0301.server.model.middleware.RpcMiddleware;
-import cn.tzq0301.server.registry.impl.LocalServiceRegistry;
+import cn.tzq0301.registry.impl.LocalServiceRegistry;
 import cn.tzq0301.server.model.service.RpcService;
 
 import java.nio.charset.StandardCharsets;

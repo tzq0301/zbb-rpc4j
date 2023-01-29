@@ -1,7 +1,6 @@
 package cn.tzq0301;
 
 import cn.tzq0301.server.RpcServer;
-import cn.tzq0301.server.demo.DemoService;
 import cn.tzq0301.server.model.middleware.impl.JdkLogMiddleware;
 import lombok.extern.java.Log;
 
@@ -18,8 +17,7 @@ public class ServerApplication {
                 "Hello", (ctx, req, resp) -> {
                     log.info("Hello World!!!");
                     resp.setCode(0);
-                },
-                "Demo", new DemoService()::demo
+                }
         ));
         server.run();
     }
